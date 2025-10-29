@@ -1,4 +1,5 @@
 import room from "./roomModel.js"
+import user from "./userModel.js"
 
 
 const defineAssociations = () =>

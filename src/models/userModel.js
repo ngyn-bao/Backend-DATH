@@ -44,3 +44,5 @@ const user = sequelize.define('User', {
 		type: DataTypes.INT,
 	}
 });
+
+export default user;

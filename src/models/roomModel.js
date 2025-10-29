@@ -38,3 +38,5 @@ const room = sequelize.define('Room', {
 		type: DataTypes.INT
 	}
 });
+
+export default room;
