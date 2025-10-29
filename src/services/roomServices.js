@@ -8,9 +8,10 @@ export const roomService = {
 		};
 	},
 
-	getRoomsByStatus: async function (req)
+	getRoomsByFilter: async function (req)
 	{
 		const roomStatus = req.params.status;
+
 		const result = await room.findAll({
 			where: {
 				status: roomStatus;
@@ -20,7 +21,7 @@ export const roomService = {
 			items: result || []
 		}
 
-	}
+	},
 
 	deleteRoomByID: async function (req) {
 		const roomID = req.params.id;

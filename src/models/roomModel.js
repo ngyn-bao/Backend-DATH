@@ -36,8 +36,10 @@ const room = sequelize.define('room', {
 	{
 		type: DataTypes.INTEGER
 	},
-
-	freezeTableName: true
-});
+},
+	{
+		tableName: "room",
+		timestamps: false
+	});
 
 export default room;

@@ -9,11 +9,11 @@ const defineAssociations = () =>
 	role.belongsTo(user, {foreignKey: "role_id"})
 
 	user.hasMany(user, {foreignKey: "manager_id"})
-	user.belongsTo(user);
+	user.belongsTo(user, {foreignKey: "manager_id"});
 	
 	//room to user
 	user.hasMany(room, {foreignKey: "manager_id"});
-	room.belongsTo(user);
+	room.belongsTo(user, {foreignKey: "manager_id"});
 }
 
 export default defineAssociations
