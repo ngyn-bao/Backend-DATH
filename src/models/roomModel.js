@@ -1,33 +1,32 @@
 import { Sequelize, DataTypes } from 'sequelize';
-
-const sequelize = new Sequelize('sqlite::memory:');
-const room = sequelize.define('Room', {
+import sequelize from "../sequelize/sequelize_connection.js";
+const room = sequelize.define('room', {
 	ID: 
 	{
-		type: DataTypes.INT,
+		type: DataTypes.INTEGER,
 		primaryKey: true,
 		autoIncrement: true,
 		allowNull: false,
 	},
 	status:
 	{
-		type: DataTypes.STRING
+		type: DataTypes.STRING(50),
 	},
 	capacity:
 	{
-		type: DataTypes.INT
+		type: DataTypes.INTEGER,
 	},
 	type:
 	{
-		type: DataTypes.STRING
+		type: DataTypes.STRING(100),
 	},
 	name:
 	{
-		type: DataTypes.STRING
+		type: DataTypes.STRING(255),
 	},
 	building:
 	{
-		type: DataTypes.STRING
+		type: DataTypes.STRING(255),
 	},
 	description:
 	{
@@ -35,8 +34,10 @@ const room = sequelize.define('Room', {
 	},
 	manager_id:
 	{
-		type: DataTypes.INT
-	}
+		type: DataTypes.INTEGER
+	},
+
+	freezeTableName: true
 });
 
 export default room;

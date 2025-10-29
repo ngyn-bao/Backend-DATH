@@ -1,8 +1,8 @@
 -- =============================================
 -- 1. Bảng Role
 -- =============================================
-create database ĐATH;
-use ĐATH;
+create database DATH;
+use DATH;
 CREATE TABLE role (
     ID INT AUTO_INCREMENT PRIMARY KEY,
     role_name VARCHAR(100) NOT NULL
@@ -160,4 +160,3 @@ CREATE TABLE energy_report (
     FOREIGN KEY (device_id) REFERENCES device(ID),
     FOREIGN KEY (generate_by) REFERENCES user(ID)
 );
-feedbackfeedback

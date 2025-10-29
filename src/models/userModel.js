@@ -1,48 +1,51 @@
 import { Sequelize, DataTypes } from 'sequelize';
-
-const sequelize = new Sequelize('sqlite::memory:');
-const user = sequelize.define('User', {
+import sequelize from "../sequelize/sequelize_connection.js";
+const user = sequelize.define('user', {
 	ID: 
 	{
-		type: DataTypes.INT,
+		type: DataTypes.INTEGER,
 		primaryKey: true,
 		autoIncrement: true,
 		allowNull: false,
 	},
 	manager_id:
 	{
-		type: DataTypes.INT,
-	}
+		type: DataTypes.INTEGER,
+	},
 	email:
 	{
-		type: DataTypes.STRING,
+		type: DataTypes.STRING(255),
 		unique: true,
-	}
+	},
 	full_name:
 	{
-		type: DataTypes.STRING,
-	}
+		type: DataTypes.STRING(255),
+	},
 	status:
 	{
-		type: DataTypes.STRING,
-	}
+		type: DataTypes.STRING(50),
+	},
 	created_date:
 	{
 		type: DataTypes.DATE,
 		defaultValue: DataTypes.NOW,
-	}
+	},
 	last_login:
 	{
 		type: DataTypes.DATE,
-	}
+	},
 	phone_num:
 	{
-		type: DataTypes.STRING,
-	}
+		type: DataTypes.STRING(20),
+	},
 	role_id:
 	{
-		type: DataTypes.INT,
-	}
-});
+		type: DataTypes.INTEGER,
+	},
+},
+	{
+		tableName: 'user',
+		timestamps: false
+	});
 
 export default user;

@@ -1,7 +1,6 @@
-//code first
 import { Sequelize } from "sequelize";
 
-const sequelize = new Sequelize("bt_sql", "root", "1234", {
+const sequelize = new Sequelize("DATH", "root", "1234", {
   host: "localhost",
   port: 3307,
   dialect: "mysql",
@@ -11,7 +10,7 @@ const sequelize = new Sequelize("bt_sql", "root", "1234", {
 sequelize
   .authenticate()
   .then(() => {
-    console.log("Kết nối db thành công !");
+    console.log("Kết nối db thành công!");
   })
   .catch((error) => {
     console.log(error);

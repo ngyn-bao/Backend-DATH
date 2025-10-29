@@ -26,7 +26,7 @@ export const roomService = {
 		const roomID = req.params.id;
 		const result = await room.destroy({
 			where:{
-				id: roomID,
+				ID: roomID,
 			},
 		});
 		return {
