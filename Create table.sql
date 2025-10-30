@@ -1,8 +1,8 @@
 -- =============================================
 -- 1. Bảng Role
 -- =============================================
-create database DATH;
-use DATH;
+create database ĐATH;
+use ĐATH;
 CREATE TABLE role (
     ID INT AUTO_INCREMENT PRIMARY KEY,
     role_name VARCHAR(100) NOT NULL
@@ -160,3 +160,20 @@ CREATE TABLE energy_report (
     FOREIGN KEY (device_id) REFERENCES device(ID),
     FOREIGN KEY (generate_by) REFERENCES user(ID)
 );
+
+CREATE TABLE room_image (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  room_id INT NOT NULL,
+  image_url VARCHAR(255) NOT NULL,
+  cloudinary_id VARCHAR(255) NOT NULL,
+  FOREIGN KEY (room_id) REFERENCES room(ID) ON DELETE CASCADE
+);
+
+CREATE TABLE room_qr (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  room_id INT NOT NULL UNIQUE,
+  qr_path VARCHAR(255) NOT NULL,
+  generated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (room_id) REFERENCES room(ID) ON DELETE CASCADE
+);
+feedbackfeedback
