@@ -19,20 +19,17 @@ const options = {
     ],
     tags: [
       {
+        name: "Auth",
+        description: "Đăng ký / Đăng nhập",
+      },
+      {
         name: "Study Space / Room Management",
         description: "Quản lý phòng học, hình ảnh, IoT và QR Code",
       },
-      { name: "Suất chiếu", description: "Các API liên quan đến suất chiếu" },
       {
-        name: "Auth",
-        description: "Các API liên quan tới đăng ký / đăng nhập",
+        name: "Booking",
+        description: "Quản lý đặt phòng học (Booking Study Space)",
       },
-      {
-        name: "Khách hàng",
-        description: "Các API liên quan tới khách hàng",
-      },
-      { name: "Chi nhánh", description: "Các API liên quan tới chi nhánh" },
-      { name: "Nhân viên", description: "Các API liên quan tới nhân viên" },
     ],
   },
   apis: ["./src/routers/*.js", "./src/controllers/*.js"], // nơi chứa comment @swagger
