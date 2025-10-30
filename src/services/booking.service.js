@@ -1,5 +1,5 @@
-import prisma from "../common/prisma/prisma.init";
-import { BadRequestError, NotFoundError } from "../helpers/handleError";
+import prisma from "../common/prisma/prisma.init.js";
+import { BadRequestError, NotFoundError } from "../helpers/handleError.js";
 
 export const bookingService = {
   create: async function (req) {

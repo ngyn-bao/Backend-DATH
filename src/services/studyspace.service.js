@@ -1,11 +1,11 @@
-import cloudinary from "../common/cloudinary/cloudinary.config";
-import prisma from "../common/prisma/prisma.init";
+import cloudinary from "../common/cloudinary/cloudinary.config.js";
+import prisma from "../common/prisma/prisma.init.js";
 import QRCode from "qrcode";
 import {
   BadRequestError,
   ConflictError,
   NotFoundError,
-} from "../helpers/handleError";
+} from "../helpers/handleError.js";
 
 export const studySpaceService = {
   create: async function (req) {
@@ -93,6 +93,10 @@ export const studySpaceService = {
 
     if (!roomId) throw new BadRequestError("Vui lòng nhập id phòng");
 
+    const device = await prisma.device.findFirst({
+      where: { room_id: roomId },
+    });
+
     const mappedDevice = await prisma.device.updateMany({
       where: { ID: { in: deviceIds } },
       data: { room_id: +roomId },
@@ -144,10 +148,10 @@ export const studySpaceService = {
       orderBy: { building: "asc" },
     });
 
-    if (roomList.length === 0)
-      throw new NotFoundError("Không có phòng khả dụng!");
+    // if (roomList.length === 0)
+    //   throw new NotFoundError("Không có phòng khả dụng!");
 
-    return { roomList: roomList };
+    return { roomList: roomList.length == 0 ? roomList : [] };
   },
 
   findOne: async function (req) {

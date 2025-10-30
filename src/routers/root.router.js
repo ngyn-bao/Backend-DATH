@@ -6,7 +6,7 @@ import studySpaceRouter from "./studyspace.route.js";
 const rootRouter = express.Router();
 
 rootRouter.use("/auth", authRouter);
-rootRouter.use("/rooms", studySpaceRouter);
+rootRouter.use("/study-space", studySpaceRouter);
 rootRouter.use("/booking", bookingRouter);
 
 export default rootRouter;
