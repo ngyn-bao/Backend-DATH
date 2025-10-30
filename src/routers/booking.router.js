@@ -1,3 +1,4 @@
+import {bookingController} from "../controllers/booking.controller.js"
 import express from "express";
 
 const bookingRouter = express.Router();

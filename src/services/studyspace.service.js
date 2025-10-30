@@ -1,11 +1,11 @@
-import cloudinary from "../common/cloudinary/cloudinary.config";
-import prisma from "../common/prisma/prisma.init";
+import cloudinary from "../common/cloudinary/cloudinary.config.js";
+import prisma from "../common/prisma/prisma.init.js";
 import QRCode from "qrcode";
 import {
   BadRequestError,
   ConflictError,
   NotFoundError,
-} from "../helpers/handleError";
+} from "../helpers/handleError.js";
 
 export const studySpaceService = {
   create: async function (req) {

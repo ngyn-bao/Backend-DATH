@@ -1,5 +1,4 @@
-const { PrismaClient } = require('./generated/prisma')
-const prisma = new PrismaClient()
+import prisma from "../common/prisma/prisma.init.js";
 export const reportService = {
 	report: async function(req)
 	{
