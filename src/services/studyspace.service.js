@@ -111,8 +111,17 @@ export const studySpaceService = {
     if (!roomId) throw new BadRequestError("Vui lòng nhập id phòng");
 
     const room = await prisma.room.findUnique({ where: { ID: +roomId } });
-
     if (!room) throw new NotFoundError("Không tìm thấy phòng");
+
+    const existingQR = await prisma.room_qr.findUnique({
+      where: { room_id: +roomId },
+    });
+
+    if (existingQR) {
+      return {
+        qr_path: existingQR.qr_path,
+      };
+    }
 
     const qrData = {
       id: room.ID,
@@ -122,24 +131,36 @@ export const studySpaceService = {
     };
 
     const qrBuffer = await QRCode.toBuffer(JSON.stringify(qrData));
-    const uploadRes = cloudinary.uploader.upload_stream(
-      {
-        folder: "DATH / qrcodes",
-      },
-      (err, result) => {
-        if (err) throw err;
-        prisma.room_qr.upsert({
-          where: { room_id: roomId },
-          update: { qr_path: result.secure_url, generated_at: new Date() },
-          create: { room_id: roomId, qr_path: result.secure_url },
-        });
-      },
-    );
 
-    const stream = uploadRes;
-    stream.end(qrBuffer);
+    const uploadResPromise = new Promise((resolve, reject) => {
+      const uploadStream = cloudinary.uploader.upload_stream(
+        {
+          folder: "DATH/qrcodes",
+          unique_filename: true,
+        },
+        async (err, result) => {
+          if (err) return reject(err);
 
-    return { uploadRes };
+          const savedQR = await prisma.room_qr.create({
+            data: {
+              room_id: +roomId,
+              qr_path: result.secure_url,
+              generated_at: new Date(),
+            },
+          });
+
+          resolve(savedQR);
+        },
+      );
+
+      uploadStream.end(qrBuffer);
+    });
+
+    const uploadRes = await uploadResPromise;
+
+    return {
+      qr_path: uploadRes.qr_path,
+    };
   },
 
   findAll: async function (req) {
