@@ -1,38 +1,47 @@
-import room from "../models/RoomModel.js"
-
+import { PrismaClient } from '../../generated/prisma'
+//const { PrismaClient } = require('./generated/prisma')
+const prisma = new PrismaClient()
 export const roomService = {
 	getAllRooms: async function (req) {
-		const result = await room.findAll();
+		const result = await prisma.room.findMany();
 		return {
 			items: result || [],
 		};
 	},
 
-	getRoomsByFilter: async function (req)
-	{
-		const roomStatus = req.params.status;
+	getRooms: async function (req) {
+		if(req.query == []) return getAllRooms(req);
 
-		const result = await room.findAll({
-			where: {
-				status: roomStatus;
-			}
-		});
-		return{
-			items: result || []
-		}
+		const result = await prisma.room.findMany({
+			where: req.query
+		})
 
+		return {
+			items: result || [],
+		};
 	},
 
-	deleteRoomByID: async function (req) {
+	checkInByID: async function (req) {
 		const roomID = req.params.id;
-		const result = await room.destroy({
-			where:{
-				ID: roomID,
+		const result = await prisma.room.update({
+			where: {
+				id: roomID
 			},
-		});
-		return {
-			items: result || [],
-		};
+			data: {
+				status: "occupied"
+			}
+		})
+	},
 
-	}
+	checkOutByID: async function (req) {
+		const roomID = req.params.id;
+		const result = await prisma.room.update({
+			where: {
+				id: roomID
+			},
+			data: {
+				status: "unoccupied"
+			}
+		})
+	},
 };
