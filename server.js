@@ -1,13 +1,20 @@
 import express from "express";
-import roomRouter from "./src/routers/room.router.js"
-// import rootRouter from "./src/routers/rootRouter.js";
+import "dotenv/config";
+import cors from "cors";
+import rootRouter from "./src/routers/root.router.js";
+import fileUpload from "express-fileupload";
 
 const app = express();
 
+app.use(cors());
+
 app.use(express.json());
-app.use()
-const PORT = 3000;
+const PORT = process.env.PORT ?? 3000;
+
+app.use(rootRouter);
+
+app.use(fileUpload({ useTempFile: true }));
 
 app.listen(PORT, () => {
-  console.log("Dự án đang chạy trên PORT 3000");
+  console.log(`Dự án đang chạy trên PORT ${PORT}!`);
 });

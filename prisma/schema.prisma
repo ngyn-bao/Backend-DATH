@@ -1,0 +1,207 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model booking {
+  ID                   Int                    @id @default(autoincrement())
+  created_at           DateTime?              @default(now()) @db.DateTime(0)
+  booking_user         Int?
+  start_time           DateTime?              @db.DateTime(0)
+  end_time             DateTime?              @db.DateTime(0)
+  cancel_reason        String?                @db.Text
+  room_id              Int?
+  status               String?                @db.VarChar(50)
+  check_log            String?                @db.Text
+  checkin_time         DateTime?              @db.DateTime(0)
+  checkout_time        DateTime?              @db.DateTime(0)
+  user                 user?                  @relation(fields: [booking_user], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "booking_ibfk_1")
+  room                 room?                  @relation(fields: [room_id], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "booking_ibfk_2")
+  booking_usage_report booking_usage_report[]
+  feedback             feedback[]
+  penalty              penalty[]
+
+  @@index([booking_user], map: "booking_user")
+  @@index([room_id], map: "room_id")
+}
+
+model booking_usage_report {
+  Booking_ID   Int
+  report_id    Int
+  booking      booking      @relation(fields: [Booking_ID], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "booking_usage_report_ibfk_1")
+  usage_report usage_report @relation(fields: [report_id], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "booking_usage_report_ibfk_2")
+
+  @@id([Booking_ID, report_id])
+  @@index([report_id], map: "report_id")
+}
+
+model device {
+  ID                 Int             @id @default(autoincrement())
+  room_id            Int?
+  name               String?         @db.VarChar(255)
+  description        String?         @db.Text
+  energy_consumption Float?          @db.Float
+  type               String?         @db.VarChar(100)
+  room               room?           @relation(fields: [room_id], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "device_ibfk_1")
+  energy_report      energy_report[]
+
+  @@index([room_id], map: "room_id")
+}
+
+model energy_report {
+  ID                       Int       @id @default(autoincrement())
+  created_date             DateTime? @default(now()) @db.DateTime(0)
+  period_start             DateTime? @db.DateTime(0)
+  period_end               DateTime? @db.DateTime(0)
+  cost_forecast            Float?    @db.Float
+  total_energy_consumption Float?    @db.Float
+  iot_device_performance   String?   @db.VarChar(255)
+  device_id                Int?
+  generate_by              Int?
+  device                   device?   @relation(fields: [device_id], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "energy_report_ibfk_1")
+  user                     user?     @relation(fields: [generate_by], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "energy_report_ibfk_2")
+
+  @@index([device_id], map: "device_id")
+  @@index([generate_by], map: "generate_by")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model feedback {
+  ID         Int       @id @default(autoincrement())
+  rating     Int?
+  comment    String?   @db.Text
+  created_at DateTime? @default(now()) @db.DateTime(0)
+  booking_id Int?
+  booking    booking?  @relation(fields: [booking_id], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "feedback_ibfk_1")
+
+  @@index([booking_id], map: "booking_id")
+}
+
+model penalty {
+  ID                                Int       @id @default(autoincrement())
+  user_id                           Int?
+  edited_user_id                    Int?
+  created_at                        DateTime? @default(now()) @db.DateTime(0)
+  point                             Int?
+  type                              String?   @db.VarChar(100)
+  note                              String?   @db.Text
+  booking_id                        Int?
+  user_penalty_user_idTouser        user?     @relation("penalty_user_idTouser", fields: [user_id], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "penalty_ibfk_1")
+  user_penalty_edited_user_idTouser user?     @relation("penalty_edited_user_idTouser", fields: [edited_user_id], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "penalty_ibfk_2")
+  booking                           booking?  @relation(fields: [booking_id], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "penalty_ibfk_3")
+
+  @@index([booking_id], map: "booking_id")
+  @@index([edited_user_id], map: "edited_user_id")
+  @@index([user_id], map: "user_id")
+}
+
+model role {
+  ID        Int    @id @default(autoincrement())
+  role_name String @db.VarChar(100)
+  user      user[]
+}
+
+model room {
+  ID          Int          @id @default(autoincrement())
+  status      String?      @db.VarChar(50)
+  capacity    Int?
+  type        String?      @db.VarChar(100)
+  name        String?      @db.VarChar(255)
+  building    String?      @db.VarChar(255)
+  description String?      @db.Text
+  manager_id  Int?
+  booking     booking[]
+  device      device[]
+  user        user?        @relation(fields: [manager_id], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "room_ibfk_1")
+  room_image  room_image[]
+  room_qr     room_qr?
+
+  @@index([manager_id], map: "manager_id")
+}
+
+model system_config {
+  ID            Int             @id @default(autoincrement())
+  config_name   String?         @db.VarChar(255)
+  config_value  String?         @db.VarChar(255)
+  manage_config manage_config[]
+}
+
+model usage_report {
+  ID                      Int                    @id @default(autoincrement())
+  created_date            DateTime?              @default(now()) @db.DateTime(0)
+  period_start            DateTime?              @db.DateTime(0)
+  period_end              DateTime?              @db.DateTime(0)
+  time_usage_by_hours     Float?                 @db.Float
+  violation_by_user       Int?
+  violation_by_group_user Int?
+  no_checkin_count        Int?
+  booking_count           Int?
+  room_usage_rate         Float?                 @db.Float
+  peak_hours              String?                @db.VarChar(100)
+  generate_by             Int?
+  booking_usage_report    booking_usage_report[]
+  user                    user?                  @relation(fields: [generate_by], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "usage_report_ibfk_1")
+
+  @@index([generate_by], map: "generate_by")
+}
+
+model user {
+  ID                                   Int             @id @default(autoincrement())
+  manager_id                           Int?
+  email                                String          @unique(map: "email") @db.VarChar(255)
+  full_name                            String          @db.VarChar(255)
+  status                               String?         @db.VarChar(50)
+  created_date                         DateTime?       @default(now()) @db.DateTime(0)
+  last_login                           DateTime?       @db.DateTime(0)
+  phone_num                            String?         @db.VarChar(20)
+  role_id                              Int?
+  booking                              booking[]
+  energy_report                        energy_report[]
+  manage_config                        manage_config[]
+  penalty_penalty_user_idTouser        penalty[]       @relation("penalty_user_idTouser")
+  penalty_penalty_edited_user_idTouser penalty[]       @relation("penalty_edited_user_idTouser")
+  room                                 room[]
+  usage_report                         usage_report[]
+  user                                 user?           @relation("userTouser", fields: [manager_id], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "user_ibfk_1")
+  other_user                           user[]          @relation("userTouser")
+  role                                 role?           @relation(fields: [role_id], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "user_ibfk_2")
+
+  @@index([manager_id], map: "manager_id")
+  @@index([role_id], map: "role_id")
+}
+
+model room_image {
+  id            Int    @id @default(autoincrement())
+  room_id       Int
+  image_url     String @db.VarChar(255)
+  cloudinary_id String @db.VarChar(255)
+  room          room   @relation(fields: [room_id], references: [ID], onDelete: Cascade, onUpdate: NoAction, map: "room_image_ibfk_1")
+
+  @@index([room_id], map: "room_id")
+}
+
+model room_qr {
+  id           Int       @id @default(autoincrement())
+  room_id      Int       @unique(map: "room_id")
+  qr_path      String    @db.VarChar(255)
+  generated_at DateTime? @default(now()) @db.DateTime(0)
+  room         room      @relation(fields: [room_id], references: [ID], onDelete: Cascade, onUpdate: NoAction, map: "room_qr_ibfk_1")
+}
+
+model manage_config {
+  ID            Int            @id @default(autoincrement())
+  action        String         @db.VarChar(100)
+  description   String?        @db.Text
+  executed_at   DateTime?      @default(now()) @db.DateTime(0)
+  config_id     Int?
+  admin_id      Int?
+  system_config system_config? @relation(fields: [config_id], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "manage_config_ibfk_1")
+  user          user?          @relation(fields: [admin_id], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "manage_config_ibfk_2")
+
+  @@index([admin_id], map: "admin_id")
+  @@index([config_id], map: "config_id")
+}
