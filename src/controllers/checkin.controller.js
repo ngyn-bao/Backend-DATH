@@ -1,5 +1,5 @@
 import { checkinService } from "../services/checkin.service.js";
-import { handleSuccessResponse } from "../helper/handlerResponse"
+import { handleSuccessResponse } from "../helper/handleResponse.js"
 
 export const checkinController = {
 	checkin: async function (req, res, next) {

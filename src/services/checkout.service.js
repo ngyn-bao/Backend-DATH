@@ -9,27 +9,27 @@ import {
 export const checkoutService = {
 	checkout: async function (req) {
 		const roomID = req.params.id;
-		if (!roomId) throw new BadRequestError("Vui lòng nhập id phòng");
+		if (!roomID) throw new BadRequestError("Vui lòng nhập id phòng");
 
 		await prisma.room.update({
 			data: 
 			{
 				status: "unoccupied",
-			}
+			},
 			where:
 			{
-				id: roomID,
+				ID: roomID,
 			}
 		})
 
 		await prisma.booking.update({
 			data:
 			{
-				checkout_time: Date.now(),
+				checkout_time: new Date(Date.now()),
 			},
 			where:
 			{
-				id: roomID,
+				ID: roomID,
 			}
 		})
 	}

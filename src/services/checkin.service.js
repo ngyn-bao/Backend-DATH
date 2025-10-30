@@ -9,7 +9,7 @@ import {
 export const checkinService = {
 	checkin: async function (req) {
 		const roomID = req.params.id;
-		if (!roomId) throw new BadRequestError("Vui lòng nhập id phòng");
+		if (!roomID) throw new BadRequestError("Vui lòng nhập id phòng");
 
 		const room = await prisma.room.update({
 			data: 
@@ -18,18 +18,18 @@ export const checkinService = {
 			},
 			where:
 			{
-				id: roomID,
+				ID: parseInt(roomID, 10),
 			}
 		});
 
 		await prisma.booking.update({
 			data:
 			{
-				checkin_time: Date.now(),
+				checkin_time: new Date(Date.now()),
 			},
 			where:
 			{
-				id: roomID,
+				ID: parseInt(roomID, 10),
 			}
 		})
 	}
