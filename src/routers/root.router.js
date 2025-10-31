@@ -7,7 +7,7 @@ import checkoutRouter from "./checkout.router.js";
 import adminConfigRouter from "./adminConfig.router.js";
 import adminUserRouter from "./adminUser.router.js";
 import reportRouter from "./report.router.js";
-import feedbackrouter from "./feedback.router.js"
+import feedbackRouter from "./feedback.router.js"
 
 const rootRouter = express.Router();
 

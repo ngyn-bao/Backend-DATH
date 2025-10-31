@@ -1,5 +1,5 @@
 import { reportService } from "../services/report.service.js";
-import { handleSuccessResponse } from "../helper/handleResponse.js"
+import { handleSuccessResponse } from "../helpers/handleResponse.js"
 
 export const reportController = {
 	getUsageReport: async function (req, res, next) {

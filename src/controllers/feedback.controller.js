@@ -1,5 +1,5 @@
 import { feedbackService } from "../services/feedback.service.js";
-import { handleSuccessResponse } from "../helper/handleResponse.js"
+import { handleSuccessResponse } from "../helpers/handleResponse.js"
 
 export const feedbackController = {
 	getFeedback: async function (req, res, next) {

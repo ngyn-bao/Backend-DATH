@@ -1,5 +1,5 @@
 import { checkoutService } from "../services/checkout.service.js";
-import { handleSuccessResponse } from "../helper/handleResponse.js"
+import { handleSuccessResponse } from "../helpers/handleResponse.js"
 
 export const checkoutController = {
 	checkout: async function (req, res, next) {
