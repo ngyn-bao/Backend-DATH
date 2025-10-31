@@ -1,20 +1,26 @@
 import express from "express";
 import { studySpaceController } from "../controllers/studyspace.controller.js";
+import protect from "../common/middleware/protect.middleware.js";
 
 const studySpaceRouter = express.Router();
 
 // Tạo route CRUD
-studySpaceRouter.post("/", studySpaceController.create);
-studySpaceRouter.post("/:id/upload", studySpaceController.upload);
-studySpaceRouter.post("/:id/iot-map", studySpaceController.iotMap);
-studySpaceRouter.get("/:id/qr", studySpaceController.qr);
-studySpaceRouter.get("/", studySpaceController.findAll);
-studySpaceRouter.get("/:id", studySpaceController.findOne);
-studySpaceRouter.put("/:id", studySpaceController.update);
-studySpaceRouter.patch("/:id/status", studySpaceController.updateStatus);
-studySpaceRouter.delete("/:id", studySpaceController.remove);
+studySpaceRouter.post("/", protect, studySpaceController.create);
+studySpaceRouter.post("/:id/upload", protect, studySpaceController.upload);
+studySpaceRouter.post("/:id/iot-map", protect, studySpaceController.iotMap);
+studySpaceRouter.get("/:id/qr", protect, studySpaceController.qr);
+studySpaceRouter.get("/", protect, studySpaceController.findAll);
+studySpaceRouter.get("/:id", protect, studySpaceController.findOne);
+studySpaceRouter.put("/:id", protect, studySpaceController.update);
+studySpaceRouter.patch(
+  "/:id/status",
+  protect,
+  studySpaceController.updateStatus,
+);
+studySpaceRouter.delete("/:id", protect, studySpaceController.remove);
 studySpaceRouter.delete(
   "/:roomId/images/:imageId",
+  protect,
   studySpaceController.deleteRoomImage,
 );
 

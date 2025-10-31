@@ -4,6 +4,8 @@ import bookingRouter from "./booking.router.js";
 import studySpaceRouter from "./studyspace.router.js";
 import checkinRouter from "./checkin.router.js";
 import checkoutRouter from "./checkout.router.js";
+import adminConfigRouter from "./adminConfig.router.js";
+import adminUserRouter from "./adminUser.router.js";
 
 const rootRouter = express.Router();
 
@@ -13,5 +15,7 @@ rootRouter.use("/booking", bookingRouter);
 rootRouter.use("/checkin", checkinRouter);
 rootRouter.use("/checkout", checkoutRouter);
 rootRouter.use("/report", usageRouter);
+rootRouter.use("/admin-config", adminConfigRouter);
+rootRouter.use("/admin-user", adminUserRouter);
 
 export default rootRouter;

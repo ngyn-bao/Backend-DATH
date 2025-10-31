@@ -30,6 +30,14 @@ const options = {
         name: "Booking",
         description: "Quản lý đặt phòng học (Booking Study Space)",
       },
+      {
+        name: "Config Management",
+        description: "Quản lý configs",
+      },
+      {
+        name: "User Management",
+        description: "Quản lý người dùng",
+      },
     ],
   },
   apis: ["./src/routers/*.js", "./src/controllers/*.js"], // nơi chứa comment @swagger

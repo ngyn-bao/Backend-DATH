@@ -150,7 +150,7 @@ export const reportService = {
 		return { newReport };
 	},
 	getUsageReport: async function (req){
-		consts reportID = req.params.id;
+		const reportID = req.params.id;
 
 		const report = prisma.usage_report.findUnique({
 			where:{
@@ -159,7 +159,7 @@ export const reportService = {
 		});
 
 		return reportID;
-	}
+	},
 	getEnergyReport: async function(req){
 		const reportID = req.params.id;
 
@@ -170,5 +170,18 @@ export const reportService = {
 		})
 
 		return report;
+	},
+	downloadEnergyReport: async function (req){
+		const reportID = req.params.id;
+
+		const report = prisma.usage_report.findUnique({
+			where:{
+				ID: reportID,
+			}
+		});
+
+		await prisma.$queryRaw'SELECT * FROM booking WHERE created_date >= ${periodStart} AND created_at <= ${periodEnd} AND booking_user = ${id}';
+
+
 	}
 };
