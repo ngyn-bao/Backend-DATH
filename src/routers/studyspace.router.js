@@ -7,7 +7,7 @@ const studySpaceRouter = express.Router();
 studySpaceRouter.post("/", studySpaceController.create);
 studySpaceRouter.post("/:id/upload", studySpaceController.upload);
 studySpaceRouter.post("/:id/iot-map", studySpaceController.iotMap);
-studySpaceRouter.post("/:id/qr", studySpaceController.qr);
+studySpaceRouter.get("/:id/qr", studySpaceController.qr);
 studySpaceRouter.get("/", studySpaceController.findAll);
 studySpaceRouter.get("/:id", studySpaceController.findOne);
 studySpaceRouter.put("/:id", studySpaceController.update);

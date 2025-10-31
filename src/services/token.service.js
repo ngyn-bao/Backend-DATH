@@ -6,25 +6,21 @@ import {
   REFRESH_TOKEN_SECRET,
 } from "../common/constant/config.constant.js";
 
-const tokenService = (nguoi_dung) => {
-  const accessToken = jwt.sign(
-    { nguoi_dung_id: nguoi_dung.nguoi_dung_id },
-    ACCESS_TOKEN_SECRET,
-    {
-      expiresIn: ACCESS_TOKEN_EXPIRE,
-    },
-  ); // => nhiệm vụ : prove nguoi_dung đã logged in
+const tokenService = (user) => {
+  const accessToken = jwt.sign({ user_id: user.user_id }, ACCESS_TOKEN_SECRET, {
+    expiresIn: ACCESS_TOKEN_EXPIRE,
+  }); // => nhiệm vụ : prove user đã logged in
 
   //refresh => thời hạn lâu hơn tk accessToken ,
   const refreshToken = jwt.sign(
-    { nguoi_dung_id: nguoi_dung.nguoi_dung_id },
+    { user_id: user.user_id },
     REFRESH_TOKEN_SECRET,
     {
       expiresIn: REFRESH_TOKEN_EXPIRE,
     },
-  ); // => nhiệm vụ : prove nguoi_dung đã logged in
+  ); // => nhiệm vụ : prove user đã logged in
   return {
-    nguoi_dung_id: nguoi_dung.nguoi_dung_id,
+    user_id: user.user_id,
     accessToken: accessToken,
     refreshToken: refreshToken,
   };

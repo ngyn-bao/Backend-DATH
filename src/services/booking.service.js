@@ -44,17 +44,17 @@ export const bookingService = {
     return { booking };
   },
 
-  findAll: async function (req) {
-    return `This action returns all entity`;
-  },
+  // findAll: async function (req) {
+  //   return `This action returns all entity`;
+  // },
 
-  findOne: async function (req) {
-    return `This action returns a entity with id: ${req.params.id}`;
-  },
+  // findOne: async function (req) {
+  //   return `This action returns a entity with id: ${req.params.id}`;
+  // },
 
-  update: async function (req) {
-    return `This action updates a entity with id: ${req.params.id}`;
-  },
+  // update: async function (req) {
+  //   return `This action updates a entity with id: ${req.params.id}`;
+  // },
 
   remove: async function (req) {
     const bookingId = req.params.id;

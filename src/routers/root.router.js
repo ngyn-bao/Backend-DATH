@@ -8,7 +8,7 @@ import checkoutRouter from "./checkout.router.js";
 const rootRouter = express.Router();
 
 rootRouter.use("/auth", authRouter);
-rootRouter.use("/rooms", studySpaceRouter);
+rootRouter.use("/study-space", studySpaceRouter);
 rootRouter.use("/booking", bookingRouter);
 rootRouter.use("/checkin", checkinRouter);
 rootRouter.use("/checkout", checkoutRouter);
