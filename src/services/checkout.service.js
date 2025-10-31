@@ -1,4 +1,3 @@
-import cloudinary from "../common/cloudinary/cloudinary.config.js";
 import prisma from "../common/prisma/prisma.init.js";
 import {
   BadRequestError,

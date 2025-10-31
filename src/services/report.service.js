@@ -6,9 +6,11 @@ import {
   NotFoundError,
 } from "../helpers/handleError.js";
 
+import { indexOfMax } from "../helpers/utils.js"
+
 export const reportService = {
 	createUsageReport: async function (req) {
-		const {
+		let {
 			periodStart,
 			periodEnd,
 			id
@@ -18,22 +20,49 @@ export const reportService = {
 		{
 			periodStart = new Date(0);
 		}
+		else
+		{
+			periodStart = new Date(periodStart);
+		}
 
 		if(!periodEnd)
 		{
 			periodEnd = Date.now();
 		}
+		else 
+		{
+			periodEnd = new Date(periodEnd);
+		}
 
-		const bookings = await prisma.$queryRaw'SELECT * FROM booking WHERE created_date >= ${periodStart} AND created_at <= ${periodEnd} AND booking_user = ${id}';
-		const penalties = await prisma.$queryRaw'SELECT * FROM penalty WHERE user_id = ${id}';
+		const bookings = await prisma.booking.findMany({
+			where: {
+				created_at: {
+					gte: periodStart,
+					lte: periodEnd
+				},
+				booking_user: id
+			}
+		});
+		const penalties = await prisma.penalty.findMany({
+			where: {
+				user_id: id
+			},
+		});
 
 		let timeUsageByHours = 0;
 		let noCheckinCount = 0;
-		let freq = [];
+		let freq = []
 
-		for (booking in bookings)
+		for(let index = 0; index < 24; ++index)
 		{
-			if(booking.checkin_time)
+			freq[index] = 0
+		}
+
+		for (let index = 0; index < bookings.length; ++index)
+		{
+			const booking = bookings[index];
+
+			if(booking.checkin_time != null)
 			{
 				timeUsageByHours += (booking.checkout_time - booking.checkin_time).getHours();
 			}
@@ -42,18 +71,26 @@ export const reportService = {
 				noCheckinCount++;
 			}
 
-			let startHours = booking.start_time.getHours();
-			let endHours = booking.end_time.getHours();
+			let startHours = booking.start_time.getUTCHours();
+			let endHours = booking.end_time.getUTCHours();
 
 			for(let j = startHours; j < endHours; ++j)
 			{
-				freq[j]++;
+				freq[j]++
 			}
 		}
+		const peakHours = indexOfMax(freq);
+		let peakHoursString = ""
 
-		const peakHours = Math.max(freq);
-		const bookingCount = bookings.size;
-		const violationByUser = penalties.size;
+		for(let i = 0; i < peakHours.length; ++i)
+		{
+			peakHoursString += peakHours[i].toString();
+
+			if(i != peakHours.length-1) peakHoursString += ",";
+		}
+
+		const bookingCount = (penalties.size != null ? penaltiez.size : 0);
+		const violationByUser = (penalties.size != null ? penalties.size : 0);
 		const violationByGroupUser = 0;
 		const roomUsageRate = 1;
 
@@ -67,8 +104,8 @@ export const reportService = {
 				no_checkin_count: noCheckinCount,
 				booking_count: bookingCount,
 				room_usage_rate: roomUsageRate,
-				peak_hours: peakHours,
-				generated_by: id
+				peak_hours: peakHoursString,
+				generate_by: id
 			},
 			include: { user: true },
 		});
@@ -89,19 +126,36 @@ export const reportService = {
 		{
 			periodStart = new Date(0);
 		}
+		else
+		{
+			periodStart = new Date(periodStart);
+		}
 
 		if(!periodEnd)
 		{
 			periodEnd = Date.now();
 		}
+		else 
+		{
+			periodEnd = new Date(periodEnd);
+		}
 
-		const bookings = await prisma.$queryRaw'SELECT * FROM booking WHERE created_date >= ${periodStart} AND created_at <= ${periodEnd} AND booking_user = ${id}';
+		const bookings = await prisma.booking.findMany({
+			where: {
+				created_at: {
+					gte: periodStart,
+					lte: periodEnd
+				},
+				booking_user: id
+			}
+		});
 
 		let totalEnergyConsumption = 0;
 		let iotDevicePerformance = "";
 
 		for (booking in bookings)
 		{
+			if(booking.checkout_time == null) continue;
 			const room = await prisma.room.findOne({
 				where:{
 					ID: booking.room_id,
@@ -113,6 +167,7 @@ export const reportService = {
 					room_id: booking.room_id,
 				}
 			})
+
 
 			const timeUsed = (booking.checkout_time - booking.checkin_time); 
 			for(device in devices)
@@ -142,7 +197,7 @@ export const reportService = {
 				total_energy_consumption: totalEnergyConsumption,
 				iot_device_performance: iotDevicePerformance,
 				cost_forecast: costForecast,
-				generated_by: id
+				generate_by: id
 			},
 			include: { user: true },
 		});
@@ -170,18 +225,5 @@ export const reportService = {
 		})
 
 		return report;
-	},
-	downloadEnergyReport: async function (req){
-		const reportID = req.params.id;
-
-		const report = prisma.usage_report.findUnique({
-			where:{
-				ID: reportID,
-			}
-		});
-
-		await prisma.$queryRaw'SELECT * FROM booking WHERE created_date >= ${periodStart} AND created_at <= ${periodEnd} AND booking_user = ${id}';
-
-
 	}
 };

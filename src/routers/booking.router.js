@@ -1,6 +1,5 @@
 import {bookingController} from "../controllers/booking.controller.js"
 import express from "express";
-import { bookingController } from "../controllers/booking.controller.js";
 import protect from "../common/middleware/protect.middleware.js";
 import checkPermission from "../common/middleware/check-permission.middleware.js";
 

@@ -46,7 +46,7 @@ const protect = async (req, res, next) => {
     }
     // console.log(accessToken);
     const verifyToken = jwt.verify(accessToken, ACCESS_TOKEN_SECRET);
-    //nếu lỗi jwt sẽ tự động bắn lỗi
+    // nếu lỗi jwt sẽ tự động bắn lỗi
     // console.log({ verifyToken });
 
     const user = await prisma.user.findUnique({
