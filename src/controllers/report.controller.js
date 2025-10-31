@@ -15,5 +15,20 @@ export const reportController = {
 		catch (err) {
 			next(err);
 		}
+	},
+
+	getEnergyReport: async function (req, res, next) {
+		try{
+			const result = await reportService.getEnergyReport(req);
+			const response = handleSuccessResponse(
+				`Báo cáo thành công`,
+				undefined,
+				result
+			);
+			res.status(response.code).json(response);
+		}
+		catch(err) {
+			next(err);
+		}
 	}
 };

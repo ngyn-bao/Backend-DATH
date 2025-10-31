@@ -3,6 +3,9 @@ import express from 'express'
 
 const reportRouter = express.Router()
 
-router.get('/usage', reportController.getUsageReport);
+router.post('/usage', reportController.createUsageReport);
+router.post('/energy', reportController.createEnergyReport);
+router.get('/usage/:id', reportController.getUsageReport);
+router.get('/energy/:id', reportController.getEnergyReport);
 
 export default reportRouter

@@ -12,5 +12,6 @@ rootRouter.use("/rooms", studySpaceRouter);
 rootRouter.use("/booking", bookingRouter);
 rootRouter.use("/checkin", checkinRouter);
 rootRouter.use("/checkout", checkoutRouter);
+rootRouter.use("/report", usageRouter);
 
 export default rootRouter;
