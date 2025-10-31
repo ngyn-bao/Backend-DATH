@@ -7,12 +7,24 @@ import {
 
 export const feedbackService = {
 	getFeedback: async function (req) {
-		const userID = req.params.id;
-		if (!userID) throw new BadRequestError("Vui lòng nhập id người dùng");
+		const feedbackID = req.params.id;
+		if (!feedbackID) throw new BadRequestError("Vui lòng nhập id của phản hồi");
 
-		const feedback = prisma.feedback.findMany({
+		const feedback = await prisma.feedback.findUnique({
 			where:{
-				booking_id: userID
+				ID: feedbackID
+			}
+		})
+
+		return {feedback};
+	},
+	getFeedbackOfBooking: async function (req) {
+		const bookingID = req.params.id;
+		if (!feedbackID) throw new BadRequestError("Vui lòng nhập id của lần booking");
+
+		const feedback = await prisma.feedback.findMany({
+			where:{
+				booking_id: bookingID
 			}
 		})
 
@@ -26,11 +38,14 @@ export const feedbackService = {
 			created_at,
 			booking_id
 		} = req.params.body;
-		if (!userID) throw new BadRequestError("Vui lòng nhập id người dùng");
 
-		const feedback = prisma.feedback.create({
-			where:{
-				booking_id: userID
+		const feedback = await prisma.feedback.create({
+			data:{
+				id: id,
+				rating: rating,
+				comment: comment,
+				created_at: created_at,
+				booking_id: booking_id
 			}
 		})
 
