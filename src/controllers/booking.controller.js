@@ -1,3 +1,4 @@
+import { handleSuccessResponse } from "../helpers/handleResponse.js";
 import { bookingService } from "../services/booking.service.js";
 
 export const bookingController = {
@@ -45,7 +46,11 @@ export const bookingController = {
   create: async function (req, res, next) {
     try {
       const result = await bookingService.create(req);
-      const response = responseSuccess(result, `Create entity successfully`);
+      const response = handleSuccessResponse(
+        `Create entity successfully`,
+        200,
+        result,
+      );
       res.status(response.code).json(response);
     } catch (err) {
       next(err);
@@ -113,9 +118,10 @@ export const bookingController = {
   remove: async function (req, res, next) {
     try {
       const result = await bookingService.remove(req);
-      const response = responseSuccess(
+      const response = handleSuccessResponse(
+        `Remove entity #${req.params.id} ,successfully`,
+        200,
         result,
-        `Remove entity #${req.params.id} successfully`,
       );
       res.status(response.code).json(response);
     } catch (err) {

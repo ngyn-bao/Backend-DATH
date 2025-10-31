@@ -5,7 +5,7 @@ import { BadRequestError, NotFoundError } from "../helpers/handleError.js";
 
 export const authService = {
   register: async function (req) {
-    const { email, password, fullname, phone_num, role_id } = req.body;
+    const { email, password, fullname, phone_num } = req.body;
     if (!email || !password || !fullname) {
       throw new BadRequestError("Dữ liệu truyền vào không hợp lệ");
     }
@@ -22,13 +22,21 @@ export const authService = {
       //b3: chưa tồn tại => tạo mới user đó
     } else {
       const hashedPassword = await bcrypt.hash(password, 10);
-      const newUser = await prisma.nguoi_dung.create({
+      const newUser = await prisma.user.create({
         data: {
           email: email,
           password: hashedPassword,
           fullname: fullname,
-          role_id: +role_id,
+          role_id: 1,
           phone_num: phone_num,
+        },
+        select: {
+          ID: true,
+          full_name: true,
+          email: true,
+          phone_num: true,
+          status: true,
+          role: { select: { role_name: true } },
         },
       });
       // console.log(email);

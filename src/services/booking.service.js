@@ -1,4 +1,5 @@
 import prisma from "../common/prisma/prisma.init.js";
+import sqlDateFormat from "../common/utils/formatDate.js";
 import { BadRequestError, NotFoundError } from "../helpers/handleError.js";
 
 export const bookingService = {
@@ -29,8 +30,8 @@ export const bookingService = {
       data: {
         room_id: +room_id,
         booking_user: +booking_user,
-        start_time: new Date(start_time),
-        end_time: new Date(end_time),
+        start_time: sqlDateFormat(new Date(start_time)),
+        end_time: sqlDateFormat(new Date(end_time)),
         status: "Booked",
       },
       include: { room: true },
