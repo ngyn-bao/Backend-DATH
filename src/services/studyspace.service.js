@@ -84,7 +84,11 @@ export const studySpaceService = {
       });
     }
 
-    return { images: image };
+    const savedImages = await prisma.room_image.findMany({
+      where: { room_id: +roomId },
+    });
+
+    return { images: savedImages };
   },
 
   iotMap: async function (req) {
