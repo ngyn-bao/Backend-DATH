@@ -45,16 +45,36 @@ export const bookingService = {
     return { booking };
   },
 
-  // findAll: async function (req) {
-  //   return `This action returns all entity`;
-  // },
+  findAll: async function (req) {
+    const bookingList = await prisma.booking.findMany();
 
-  // findOne: async function (req) {
-  //   return `This action returns a entity with id: ${req.params.id}`;
-  // },
+    return { bookingList: bookingList.length === 0 ? [] : bookingList };
+  },
+
+  findOne: async function (req) {
+    const bookingId = req.params.id;
+
+    if (!bookingId) throw new BadRequestError("Vui lòng nhập ID booking");
+
+    const foundBooking = await prisma.booking.findUnique({
+      where: { ID: +bookingId },
+    });
+
+    if (!foundBooking) throw new NotFoundError("Không tìm thấy booking");
+
+    return { foundBooking };
+  },
 
   // update: async function (req) {
-  //   return `This action updates a entity with id: ${req.params.id}`;
+  //   const { bookingId } = req.params.id;
+
+  //   if (!bookingId) throw new BadRequestError("Vui lòng nhập ID booking");
+
+  //   const foundBooking = await prisma.booking.findUnique({
+  //     where: { ID: +bookingId },
+  //   });
+
+  //   if (!foundBooking) throw new NotFoundError("Không tìm thấy booking");
   // },
 
   remove: async function (req) {

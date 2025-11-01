@@ -194,6 +194,18 @@ export const studySpaceService = {
     return { foundRoom: foundRoom };
   },
 
+  findAllDevices: async function (req) {
+    const deviceList = await prisma.device.findMany({
+      orderBy: { room_id: "asc" },
+    });
+
+    console.log(deviceList);
+    // if (roomList.length === 0)
+    //   throw new NotFoundError("Không có phòng khả dụng!");
+
+    return { deviceList: deviceList.length === 0 ? [] : deviceList };
+  },
+
   update: async function (req) {
     const roomId = req.params.id;
     const { name, building, capacity, type, description, manager_id } =

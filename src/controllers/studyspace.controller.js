@@ -150,6 +150,50 @@ export const studySpaceController = {
 
   /**
    * @swagger
+   * /study-space/devices:
+   *   get:
+   *     summary: Lấy danh sách thiết bị
+   *     tags: [Study Space / Room Management]
+   *     security:
+   *       - BearerAuth: []
+   *     responses:
+   *       200:
+   *         description: Thành công
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 code:
+   *                   type: integer
+   *                   example: 200
+   *                 message:
+   *                   type: string
+   *                   example: Lấy danh sách thiết bị thành công
+   *                 data:
+   *                   type: object
+   *                   properties:
+   *                     deviceList:
+   *                       type: array
+   *                       items:
+   *                         $ref: '#/components/schemas/Device'
+   */
+  findAllDevices: async function (req, res, next) {
+    try {
+      const result = await studySpaceService.findAllDevices(req);
+      const response = handleSuccessResponse(
+        `Create entity successfully`,
+        200,
+        result,
+      );
+      res.status(response.code).json(response);
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  /**
+   * @swagger
    * /study-space/{id}/qr:
    *   get:
    *     summary: Tạo hoặc lấy mã QR cho phòng học
