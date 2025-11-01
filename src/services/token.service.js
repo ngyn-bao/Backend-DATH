@@ -7,20 +7,16 @@ import {
 } from "../common/constant/config.constant.js";
 
 const tokenService = (user) => {
-  const accessToken = jwt.sign({ user_id: user.user_id }, ACCESS_TOKEN_SECRET, {
+  const accessToken = jwt.sign({ ID: user.ID }, ACCESS_TOKEN_SECRET, {
     expiresIn: ACCESS_TOKEN_EXPIRE,
   }); // => nhiệm vụ : prove user đã logged in
 
   //refresh => thời hạn lâu hơn tk accessToken ,
-  const refreshToken = jwt.sign(
-    { user_id: user.user_id },
-    REFRESH_TOKEN_SECRET,
-    {
-      expiresIn: REFRESH_TOKEN_EXPIRE,
-    },
-  ); // => nhiệm vụ : prove user đã logged in
+  const refreshToken = jwt.sign({ ID: user.ID }, REFRESH_TOKEN_SECRET, {
+    expiresIn: REFRESH_TOKEN_EXPIRE,
+  }); // => nhiệm vụ : prove user đã logged in
   return {
-    user_id: user.user_id,
+    ID: user.ID,
     accessToken: accessToken,
     refreshToken: refreshToken,
   };

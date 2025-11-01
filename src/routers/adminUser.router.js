@@ -8,35 +8,35 @@ const adminUserRouter = express.Router();
 // Tạo route CRUD
 
 adminUserRouter.post(
-  "/",
+  "/users",
   protect,
   checkPermission(["Admin"]),
   adminUserController.create,
 );
 
 adminUserRouter.get(
-  "/",
+  "/users",
   protect,
   checkPermission(["Admin", "IT Staff"]),
   adminUserController.findAll,
 );
 
 adminUserRouter.patch(
-  "/status",
+  "/users/status",
   protect,
   checkPermission(["Admin"]),
   adminUserController.update,
 );
 
 adminUserRouter.patch(
-  "/reset-penalty",
+  "/users/reset-penalty",
   protect,
   checkPermission(["Admin"]),
   adminUserController.resetPenalty,
 );
 
 adminUserRouter.delete(
-  "/",
+  "/users",
   protect,
   checkPermission(["Admin"]),
   adminUserController.remove,

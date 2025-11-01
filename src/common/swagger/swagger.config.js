@@ -17,6 +17,17 @@ const options = {
       //   url: "http://13.250.115.109:3069",
       // },
     ],
+    components: {
+      securitySchemes: {
+        BearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+          description: "Enter JWT token after login (format: Bearer <token>)",
+        },
+      },
+    },
+    // security: [{ BearerAuth: [] }],
     tags: [
       {
         name: "Auth",
@@ -38,13 +49,33 @@ const options = {
         name: "User Management",
         description: "Quản lý người dùng",
       },
+      {
+        name: "Checkin / Checkout",
+        description: "Checkin / Checkout phòng",
+      },
+      {
+        name: "Feedback",
+        description: "Quản lý feedback",
+      },
+      {
+        name: "Report",
+        description: "Quản lý báo cáo sử dụng",
+      },
     ],
   },
+
   apis: ["./src/routers/*.js", "./src/controllers/*.js"], // nơi chứa comment @swagger
 };
 
 const swaggerSpec = swaggerJSDoc(options);
 
 export function setupSwagger(app) {
-  app.use("/swagger/api", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+  app.use(
+    "/swagger/api",
+    swaggerUi.serve,
+    swaggerUi.setup(swaggerSpec, {
+      explorer: true,
+      swaggerOptions: { persistAuthorization: true },
+    }),
+  );
 }

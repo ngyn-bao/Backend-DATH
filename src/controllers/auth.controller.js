@@ -18,7 +18,7 @@ export const authController = {
    *             required:
    *               - email
    *               - password
-   *               - fullname
+   *               - full_name
    *             properties:
    *               email:
    *                 type: string
@@ -26,15 +26,15 @@ export const authController = {
    *               password:
    *                 type: string
    *                 example: 123456
-   *               fullname:
+   *               full_name:
    *                 type: string
    *                 example: Nguyễn Văn A
    *               phone_num:
    *                 type: string
    *                 example: "0909123456"
    *               role_id:
-   *                 type: integer
-   *                 example: 2
+   *                 type: string
+   *                 example: "1(Student) hoặc 2(Lecturer)"
    *     responses:
    *       200:
    *         description: Đăng ký thành công
@@ -88,7 +88,58 @@ export const authController = {
    */
   login: async function (req, res, next) {
     try {
-      const result = await authService.login(req);
+      const result = await authService.login(req, res);
+      const response = handleSuccessResponse(`Login successfully`, 200, result);
+      res.status(response.code).json(response);
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  /**
+   * @swagger
+   * /auth/refresh-token:
+   *   post:
+   *     summary: Lấy access token mới
+   *     description: Sử dụng refresh token trong cookie để cấp lại access token mới.
+   *     tags: [Auth]
+   *     responses:
+   *       200:
+   *         description: Trả về access token mới
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 accessToken:
+   *                   type: string
+   *       401:
+   *         description: Không có refresh token hoặc token không hợp lệ
+   */
+  refreshToken: async function (req, res, next) {
+    try {
+      const result = await authService.refreshToken(req, res);
+      const response = handleSuccessResponse(`Login successfully`, 200, result);
+      res.status(response.code).json(response);
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  /**
+   * @swagger
+   * /auth/delete-token:
+   *   delete:
+   *     summary: Xóa refresh token
+   *     description: Xóa refresh token cookie và kết thúc phiên đăng nhập (client side thực hiện).
+   *     tags: [Auth]
+   *     responses:
+   *       200:
+   *         description: Đăng xuất thành công
+   */
+  deleteToken: async function (req, res, next) {
+    try {
+      const result = await authService.deleteToken(req, res);
       const response = handleSuccessResponse(`Login successfully`, 200, result);
       res.status(response.code).json(response);
     } catch (err) {

@@ -4,10 +4,12 @@ import { adminConfigService } from "../services/adminConfig.service.js";
 export const adminConfigController = {
   /**
    * @swagger
-   * /admin-config/configs:
+   * /admin/configs:
    *   post:
    *     summary: Thêm mới cấu hình hệ thống
    *     tags: [Config Management]
+   *     security:
+   *       - BearerAuth: []
    *     requestBody:
    *       required: true
    *       content:
@@ -41,10 +43,12 @@ export const adminConfigController = {
 
   /**
    * @swagger
-   * /admin-config/configs:
+   * /admin/configs:
    *   get:
    *     summary: Lấy danh sách cấu hình hệ thống
    *     tags: [Config Management]
+   *     security:
+   *       - BearerAuth: []
    *     responses:
    *       200:
    *         description: Danh sách cấu hình thành công
@@ -78,10 +82,12 @@ export const adminConfigController = {
 
   /**
    * @swagger
-   * /admin-config/configs/{id}:
+   * /admin/configs/{id}:
    *   put:
    *     summary: Cập nhật cấu hình hệ thống
    *     tags: [Config Management]
+   *     security:
+   *       - BearerAuth: []
    *     parameters:
    *       - in: path
    *         name: id

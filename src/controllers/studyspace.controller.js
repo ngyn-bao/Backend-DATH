@@ -8,6 +8,8 @@ export const studySpaceController = {
    *   post:
    *     summary: Tạo phòng học mới (Study Space)
    *     tags: [Study Space / Room Management]
+   *     security:
+   *       - BearerAuth: []
    *     requestBody:
    *       required: true
    *       content:
@@ -62,6 +64,8 @@ export const studySpaceController = {
    *   post:
    *     summary: Upload hình ảnh cho phòng học
    *     tags: [Study Space / Room Management]
+   *     security:
+   *       - BearerAuth: []
    *     parameters:
    *       - in: path
    *         name: id
@@ -107,6 +111,8 @@ export const studySpaceController = {
    *   post:
    *     summary: Gắn thiết bị IoT vào phòng học
    *     tags: [Study Space / Room Management]
+   *     security:
+   *       - BearerAuth: []
    *     parameters:
    *       - in: path
    *         name: id
@@ -148,6 +154,8 @@ export const studySpaceController = {
    *   get:
    *     summary: Tạo hoặc lấy mã QR cho phòng học
    *     tags: [Study Space / Room Management]
+   *     security:
+   *       - BearerAuth: []
    *     parameters:
    *       - in: path
    *         name: id
@@ -180,9 +188,11 @@ export const studySpaceController = {
    *   get:
    *     summary: Lấy danh sách tất cả phòng học
    *     tags: [Study Space / Room Management]
+   *     security:
+   *       - BearerAuth: []
    *     responses:
    *       200:
-   *         description: Thành công
+   *         description: Lấy danh sách phòng học thành công
    */
   findAll: async function (req, res, next) {
     try {
@@ -204,6 +214,8 @@ export const studySpaceController = {
    *   get:
    *     summary: Lấy thông tin chi tiết một phòng học
    *     tags: [Study Space / Room Management]
+   *     security:
+   *       - BearerAuth: []
    *     parameters:
    *       - in: path
    *         name: id
@@ -236,6 +248,8 @@ export const studySpaceController = {
    *   put:
    *     summary: Cập nhật thông tin phòng học
    *     tags: [Study Space / Room Management]
+   *     security:
+   *       - BearerAuth: []
    *     parameters:
    *       - in: path
    *         name: id
@@ -281,6 +295,8 @@ export const studySpaceController = {
    *   patch:
    *     summary: Cập nhật trạng thái phòng học
    *     tags: [Study Space / Room Management]
+   *     security:
+   *       - BearerAuth: []
    *     parameters:
    *       - in: path
    *         name: id
@@ -321,6 +337,8 @@ export const studySpaceController = {
    *   delete:
    *     summary: Xóa phòng học
    *     tags: [Study Space / Room Management]
+   *     security:
+   *       - BearerAuth: []
    *     parameters:
    *       - in: path
    *         name: id
@@ -353,6 +371,8 @@ export const studySpaceController = {
    *   delete:
    *     summary: Xóa ảnh của phòng học
    *     tags: [Study Space / Room Management]
+   *     security:
+   *       - BearerAuth: []
    *     parameters:
    *       - in: path
    *         name: roomId

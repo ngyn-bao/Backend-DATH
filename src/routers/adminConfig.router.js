@@ -7,20 +7,20 @@ const adminConfigRouter = express.Router();
 
 // Tạo route CRUD
 adminConfigRouter.post(
-  "/",
+  "/configs",
   protect,
   checkPermission(["Admin", "IT Staff"]),
   adminConfigController.create,
 );
 adminConfigRouter.get(
-  "/",
+  "/configs",
   protect,
   checkPermission(["Admin", "IT Staff"]),
   adminConfigController.getAll,
 );
 // adminConfigRouter.get("/:id", adminConfigController.findOne);
 adminConfigRouter.patch(
-  "/update",
+  "/configs/:id",
   protect,
   checkPermission(["Admin", "IT Staff"]),
   adminConfigController.update,

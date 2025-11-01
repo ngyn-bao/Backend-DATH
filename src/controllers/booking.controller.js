@@ -9,6 +9,8 @@ export const bookingController = {
    *     summary: Tạo mới lịch đặt phòng
    *     description: Người dùng đặt phòng trong khoảng thời gian cụ thể, kiểm tra trùng lịch trước khi tạo.
    *     tags: [Booking]
+   *     security:
+   *       - BearerAuth: []
    *     requestBody:
    *       required: true
    *       content:
@@ -100,6 +102,8 @@ export const bookingController = {
    *     summary: Hủy lịch đặt phòng
    *     description: Hủy một lịch đặt phòng theo ID, đồng thời cập nhật trạng thái phòng về "Available".
    *     tags: [Booking]
+   *     security:
+   *       - BearerAuth: []
    *     parameters:
    *       - in: path
    *         name: id

@@ -8,6 +8,8 @@ export const adminUserController = {
    *   post:
    *     summary: Tạo mới người dùng
    *     tags: [User Management]
+   *     security:
+   *       - BearerAuth: []
    *     requestBody:
    *       required: true
    *       content:
@@ -57,6 +59,8 @@ export const adminUserController = {
    *   get:
    *     summary: Lấy danh sách tất cả người dùng
    *     tags: [User Management]
+   *     security:
+   *       - BearerAuth: []
    *     responses:
    *       200:
    *         description: Lấy danh sách thành công
@@ -94,6 +98,8 @@ export const adminUserController = {
    *   patch:
    *     summary: Cập nhật trạng thái hoặc vai trò người dùng
    *     tags: [User Management]
+   *     security:
+   *       - BearerAuth: []
    *     requestBody:
    *       required: true
    *       content:
@@ -139,6 +145,8 @@ export const adminUserController = {
    *   patch:
    *     summary: Reset toàn bộ vi phạm của người dùng
    *     tags: [User Management]
+   *     security:
+   *       - BearerAuth: []
    *     requestBody:
    *       required: true
    *       content:
@@ -179,6 +187,8 @@ export const adminUserController = {
    *   delete:
    *     summary: Xóa người dùng
    *     tags: [User Management]
+   *     security:
+   *       - BearerAuth: []
    *     requestBody:
    *       required: true
    *       content:
