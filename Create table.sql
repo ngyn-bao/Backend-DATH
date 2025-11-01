@@ -176,4 +176,11 @@ CREATE TABLE room_qr (
   generated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (room_id) REFERENCES room(ID) ON DELETE CASCADE
 );
-feedbackfeedback
+
+INSERT INTO role (role_name) VALUES
+('Student'),
+('Lecturer'),
+('Admin'),
+('IT Staff'),
+('Technical Team'),
+('Support Staff');
