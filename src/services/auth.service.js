@@ -17,6 +17,7 @@ export const authService = {
   register: async function (req) {
     const allowedRoleId = ["1", "2"];
     const { email, password, full_name, phone_num, role_id } = req.body;
+    console.log(req.body);
     if (!email || !password || !full_name || !allowedRoleId.includes(role_id)) {
       throw new BadRequestError("Dữ liệu truyền vào không hợp lệ");
     }
@@ -51,9 +52,6 @@ export const authService = {
           role: { select: { role_name: true } },
         },
       });
-      // console.log(email);
-      //   newUser.mat_khau = "12345";
-      // sendMail(email, "Bạn có khỏe không");
       return { newUser };
     }
   },
@@ -72,8 +70,11 @@ export const authService = {
         password: true,
         email: true,
         ID: true,
+        role: { select: { role_name: true } },
       },
     });
+    console.log(userExist);
+    
     //kĩ thuật ngắt dòng
     if (!userExist) {
       throw new NotFoundError(
@@ -99,7 +100,7 @@ export const authService = {
       sameSite: "strict", // chống CSRF
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 ngày = 7*24*60*60*1000 ms
     });
-    return { ID: tokens.ID, accessToken: tokens.accessToken };
+    return { ID: tokens.ID, accessToken: tokens.accessToken, role: tokens.role_name};
   },
 
   deleteToken: async (req, res) => {
@@ -120,7 +121,7 @@ export const authService = {
 
     const user = await prisma.user.findUnique({
       where: { ID: payload.ID },
-      select: { ID: true, email: true },
+      select: { ID: true, email: true, role: { select: { role_name: true } } },
     });
     if (!user) return res.status(401).json({ message: "User không tồn tại" });
 
@@ -134,6 +135,6 @@ export const authService = {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    return { ID: tokens.ID, accessToken: tokens.accessToken };
+    return { ID: tokens.ID, accessToken: tokens.accessToken , role: tokens.role_name};
   },
 };
