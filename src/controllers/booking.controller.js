@@ -125,48 +125,10 @@ export const bookingController = {
    *     responses:
    *       200:
    *         description: Lấy thông tin booking thành công.
-   *         content:
-   *           application/json:
-   *             schema:
-   *               type: object
-   *               properties:
-   *                 code:
-   *                   type: integer
-   *                   example: 200
-   *                 message:
-   *                   type: string
-   *                   example: Get entity #1 successfully
-   *                 data:
-   *                   type: object
-   *                   properties:
-   *                     foundBooking:
-   *                       $ref: '#/components/schemas/Booking'
    *       400:
    *         description: Thiếu hoặc sai ID booking.
-   *         content:
-   *           application/json:
-   *             schema:
-   *               type: object
-   *               properties:
-   *                 code:
-   *                   type: integer
-   *                   example: 400
-   *                 message:
-   *                   type: string
-   *                   example: "Vui lòng nhập ID booking"
    *       404:
    *         description: Không tìm thấy booking tương ứng với ID.
-   *         content:
-   *           application/json:
-   *             schema:
-   *               type: object
-   *               properties:
-   *                 code:
-   *                   type: integer
-   *                   example: 404
-   *                 message:
-   *                   type: string
-   *                   example: "Không tìm thấy booking"
    */
   findOne: async function (req, res, next) {
     try {
