@@ -122,8 +122,9 @@ export const adminUserService = {
     //   const userId = +req.params.id;
     const { admin_id, userId } = req.body;
 
+    const admin = await prisma.user.findUnique({ where: { ID: +admin_id } });
     const user = await prisma.user.findUnique({ where: { ID: +userId } });
-    if (!user) throw new NotFoundError("Không tìm thấy người dùng");
+    if (!user || !admin) throw new NotFoundError("Không tìm thấy người dùng");
 
     await prisma.user.delete({ where: { ID: +userId } });
 
