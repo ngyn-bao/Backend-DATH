@@ -1,8 +1,8 @@
 -- =============================================
 -- 1. Bảng Role
 -- =============================================
-create database ĐATH;
-use ĐATH;
+create database DATH;
+use DATH;
 CREATE TABLE role (
     ID INT AUTO_INCREMENT PRIMARY KEY,
     role_name VARCHAR(100) NOT NULL
@@ -107,13 +107,22 @@ CREATE TABLE penalty (
 CREATE TABLE system_config (
     ID INT AUTO_INCREMENT PRIMARY KEY,
     config_name VARCHAR(255),
-    config_value VARCHAR(255),
-    manage_config VARCHAR(255),
-    config_id INT,
-    admin_id INT,
-    FOREIGN KEY (admin_id) REFERENCES user(ID)
+    config_value VARCHAR(255) 
 );
 
+-- =============================================
+-- 8. Bảng Manage_config
+-- =============================================
+CREATE TABLE manage_config (
+    ID INT AUTO_INCREMENT PRIMARY KEY,
+    action VARCHAR(100) NOT NULL,             -- ví dụ: 'update', 'delete', 'add'
+    description TEXT,
+    executed_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    config_id INT,                            -- cấu hình bị thao tác
+    admin_id INT,                             -- người thực hiện thao tác
+    FOREIGN KEY (config_id) REFERENCES system_config(ID),
+    FOREIGN KEY (admin_id) REFERENCES user(ID)
+);
 -- =============================================
 -- 9. Bảng Usage Report
 -- =============================================
