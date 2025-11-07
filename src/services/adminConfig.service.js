@@ -8,6 +8,12 @@ export const adminConfigService = {
     if (!config_name || !config_value)
       throw new BadRequestError("Thiếu thông tin cấu hình");
 
+    if (!admin_id) throw new BadRequestError("Thiếu ID admin");
+
+    const admin = await prisma.user.findUnique({ where: { ID: +admin_id } });
+
+    if (!admin) throw new BadRequestError("Không tồn tại admin này");
+
     const config = await prisma.system_config.create({
       data: { config_name, config_value },
     });
@@ -40,6 +46,12 @@ export const adminConfigService = {
   update: async function (req) {
     const configId = +req.params.id;
     const { config_value, admin_id } = req.body;
+
+    if (!admin_id) throw new BadRequestError("Thiếu ID admin");
+
+    const admin = await prisma.user.findUnique({ where: { ID: +admin_id } });
+
+    if (!admin) throw new BadRequestError("Không tồn tại admin này");
 
     if (!configId || !config_value)
       throw new BadRequestError("Thiếu dữ liệu cập nhật");
