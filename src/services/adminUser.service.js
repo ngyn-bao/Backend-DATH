@@ -74,10 +74,13 @@ export const adminUserService = {
     const { status, admin_id, userId, role_id } = req.body;
     // const userId = +req.params.id;
 
-    if (!userId) throw new BadRequestError("Vui lòng nhập ID user");
+    if (!userId || !admin_id)
+      throw new BadRequestError("Vui lòng nhập ID user và ID admin");
 
+    const admin = await prisma.user.findUnique({ where: { ID: +admin_id } });
     const user = await prisma.user.findUnique({ where: { ID: +userId } });
-    if (!user) throw new NotFoundError("Không tìm thấy người dùng");
+    if (!user || !admin)
+      throw new NotFoundError("Không tìm thấy người dùng hoặc admin");
 
     const updated = await prisma.user.update({
       where: { ID: +userId },
@@ -121,6 +124,8 @@ export const adminUserService = {
   remove: async function (req) {
     //   const userId = +req.params.id;
     const { admin_id, userId } = req.body;
+    if (admin_id == userId)
+      throw new BadRequestError("Admin ID không được trùng với User ID");
 
     const admin = await prisma.user.findUnique({ where: { ID: +admin_id } });
     const user = await prisma.user.findUnique({ where: { ID: +userId } });
