@@ -6,8 +6,12 @@ export const adminUserService = {
   create: async function (req) {
     const { full_name, email, password, role_id, admin_id } = req.body;
 
-    if (!full_name || !email || !password || !role_id)
+    if (!full_name || !email || !password || !role_id || !admin_id)
       throw new BadRequestError("Thiếu dữ liệu tạo người dùng");
+
+    const admin = await prisma.user.findUnique({ where: { ID: +admin_id } });
+
+    if (!admin) throw new BadRequestError("Không tồn tại admin này");
 
     // Kiểm tra trùng email
     const existed = await prisma.user.findUnique({ where: { email } });
@@ -23,6 +27,7 @@ export const adminUserService = {
         role_id,
         status: "Active",
         created_date: new Date(),
+        manager_id: +admin_id,
       },
       select: {
         ID: true,
@@ -34,6 +39,7 @@ export const adminUserService = {
         penalty_penalty_user_idTouser: {
           select: { ID: true, point: true, type: true, created_at: true },
         },
+        manager_id: true,
       },
     });
 
@@ -100,6 +106,13 @@ export const adminUserService = {
 
   resetPenalty: async function (req) {
     const { admin_id, userId } = req.body;
+    if (!userId || !admin_id)
+      throw new BadRequestError("Vui lòng nhập ID user và ID admin");
+
+    const admin = await prisma.user.findUnique({ where: { ID: +admin_id } });
+    const user = await prisma.user.findUnique({ where: { ID: +userId } });
+    if (!user || !admin)
+      throw new NotFoundError("Không tìm thấy người dùng hoặc admin");
 
     const penalties = await prisma.penalty.findMany({
       where: { user_id: +userId },
