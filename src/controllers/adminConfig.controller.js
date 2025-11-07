@@ -1,4 +1,7 @@
-import { handleErrorResponse } from "../helpers/handleResponse.js";
+import {
+  handleErrorResponse,
+  handleSuccessResponse,
+} from "../helpers/handleResponse.js";
 import { adminConfigService } from "../services/adminConfig.service.js";
 
 export const adminConfigController = {
@@ -30,7 +33,7 @@ export const adminConfigController = {
   create: async function (req, res, next) {
     try {
       const result = await adminConfigService.create(req);
-      const response = handleErrorResponse(
+      const response = handleSuccessResponse(
         `Create entity successfully`,
         200,
         result,
@@ -56,7 +59,7 @@ export const adminConfigController = {
   getAll: async function (req, res, next) {
     try {
       const result = await adminConfigService.getAll(req);
-      const response = responseSuccess(
+      const response = handleSuccessResponse(
         `Get all entity successfully`,
         200,
         result,
@@ -112,7 +115,7 @@ export const adminConfigController = {
   update: async function (req, res, next) {
     try {
       const result = await adminConfigService.update(req);
-      const response = responseSuccess(
+      const response = handleSuccessResponse(
         `Update entity #${req.params.id} successfully`,
         200,
         result,
