@@ -176,7 +176,7 @@ export const studySpaceService = {
     // if (roomList.length === 0)
     //   throw new NotFoundError("Không có phòng khả dụng!");
 
-    return { roomList: roomList.length == 0 ? roomList : [] };
+    return { roomList: roomList.length == 0 ? [] : roomList };
   },
 
   findOne: async function (req) {
