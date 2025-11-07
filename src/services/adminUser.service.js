@@ -1,5 +1,6 @@
 import prisma from "../common/prisma/prisma.init.js";
 import { BadRequestError, NotFoundError } from "../helpers/handleError.js";
+import bcrypt from "bcrypt";
 
 export const adminUserService = {
   create: async function (req) {
