@@ -70,11 +70,12 @@ export const authService = {
         password: true,
         email: true,
         ID: true,
+        role_id: true,
         role: { select: { role_name: true } },
       },
     });
     console.log(userExist);
-    
+
     //kĩ thuật ngắt dòng
     if (!userExist) {
       throw new NotFoundError(
@@ -100,7 +101,12 @@ export const authService = {
       sameSite: "strict", // chống CSRF
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 ngày = 7*24*60*60*1000 ms
     });
-    return { ID: tokens.ID, accessToken: tokens.accessToken, role: tokens.role_name};
+    return {
+      ID: tokens.ID,
+      accessToken: tokens.accessToken,
+      role: tokens.role_name,
+      role_id: tokens.role_id,
+    };
   },
 
   deleteToken: async (req, res) => {
@@ -121,7 +127,12 @@ export const authService = {
 
     const user = await prisma.user.findUnique({
       where: { ID: payload.ID },
-      select: { ID: true, email: true, role: { select: { role_name: true } } },
+      select: {
+        ID: true,
+        email: true,
+        role_id: true,
+        role: { select: { role_name: true } },
+      },
     });
     if (!user) return res.status(401).json({ message: "User không tồn tại" });
 
@@ -135,6 +146,11 @@ export const authService = {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    return { ID: tokens.ID, accessToken: tokens.accessToken , role: tokens.role_name};
+    return {
+      ID: tokens.ID,
+      accessToken: tokens.accessToken,
+      role: tokens.role_name,
+      role_id: tokens.role_id,
+    };
   },
 };

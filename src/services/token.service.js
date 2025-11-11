@@ -20,6 +20,7 @@ const tokenService = (user) => {
     accessToken: accessToken,
     refreshToken: refreshToken,
     role_name: user.role.role_name,
+    role_id: user.role_id,
   };
 };
 
