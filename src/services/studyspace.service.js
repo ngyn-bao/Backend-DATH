@@ -178,7 +178,7 @@ export const studySpaceService = {
 
   findAll: async function (req) {
     const roomList = await prisma.room.findMany({
-      include: { device: true },
+      include: { device: true, room_image: true, room_qr: true },
       orderBy: { building: "asc" },
     });
 
