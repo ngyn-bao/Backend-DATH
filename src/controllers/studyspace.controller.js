@@ -288,36 +288,32 @@ export const studySpaceController = {
 
   /**
    * @swagger
-   * /study-space/{id}:
-   *   put:
-   *     summary: Cập nhật thông tin phòng học
+   * /study-space/{id}/upload:
+   *   post:
+   *     summary: Upload hình ảnh cho phòng học
    *     tags: [Study Space / Room Management]
-   *     security:
-   *       - BearerAuth: []
    *     parameters:
    *       - in: path
    *         name: id
    *         required: true
+   *         description: ID của phòng học
    *         schema:
    *           type: integer
    *     requestBody:
    *       required: true
    *       content:
-   *         application/json:
+   *         multipart/form-data:
    *           schema:
    *             type: object
    *             properties:
-   *               name: { type: string }
-   *               building: { type: string }
-   *               capacity: { type: integer }
-   *               type: { type: string }
-   *               description: { type: string }
-   *               manager_id: { type: integer }
+   *               images:
+   *                 type: array
+   *                 items:
+   *                   type: string
+   *                   format: binary
    *     responses:
    *       200:
-   *         description: Cập nhật thành công
-   *       400:
-   *         description: Lỗi yêu cầu
+   *         description: Upload ảnh thành công
    */
   update: async function (req, res, next) {
     try {

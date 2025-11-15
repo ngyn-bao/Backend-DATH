@@ -50,45 +50,54 @@ export const studySpaceService = {
 
     return { newRoom };
   },
-
   upload: async function (req) {
-    const roomId = req.params.id;
+    try {
+      const roomId = req.params.id;
 
-    if (!roomId) throw new BadRequestError("Vui lòng nhập id phòng");
-    if (!req.files || !req.files.images)
-      throw new BadRequestError("Vui lòng chọn ít nhất 1 ảnh");
+      if (!roomId) throw new BadRequestError("Vui lòng nhập id phòng");
+      if (!req.files || !req.files.images)
+        throw new BadRequestError("Vui lòng chọn ít nhất 1 ảnh");
 
-    const image = Array.isArray(req.files.images)
-      ? req.files.images
-      : [req.files.images];
+      const images = Array.isArray(req.files.images)
+        ? req.files.images
+        : [req.files.images];
 
-    const uploadResult = [];
-
-    for (const img of image) {
-      const result = await cloudinary.uploader.upload(img.tempFilePath, {
-        folder: "DATH/rooms",
-        transformation: [{ width: 1024, height: 768, crop: "limit" }],
+      const roomExists = await prisma.room.findUnique({
+        where: { ID: Number(roomId) },
       });
 
-      uploadResult.push({
-        url: result.secure_url,
-        public_id: result.public_id,
+      if (!roomExists) throw new NotFoundError("Phòng không tồn tại");
+
+      const uploadedImages = [];
+
+      for (const img of images) {
+        const result = await cloudinary.uploader.upload(img.tempFilePath, {
+          folder: "DATH/rooms",
+          transformation: [{ width: 1024, height: 768, crop: "limit" }],
+        });
+
+        uploadedImages.push({
+          url: result.secure_url,
+          public_id: result.public_id,
+        });
+
+        await prisma.room_image.create({
+          data: {
+            room_id: +roomId,
+            image_url: result.secure_url,
+            cloudinary_id: result.public_id,
+          },
+        });
+      }
+
+      const savedImages = await prisma.room_image.findMany({
+        where: { room_id: +roomId },
       });
 
-      await prisma.room_image.create({
-        data: {
-          room_id: +roomId,
-          image_url: result.secure_url,
-          cloudinary_id: result.public_id,
-        },
-      });
+      return { images: savedImages };
+    } catch (err) {
+      throw err;
     }
-
-    const savedImages = await prisma.room_image.findMany({
-      where: { room_id: +roomId },
-    });
-
-    return { images: savedImages };
   },
 
   iotMap: async function (req) {
