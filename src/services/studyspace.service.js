@@ -105,10 +105,12 @@ export const studySpaceService = {
     const { deviceIds } = req.body;
 
     if (!roomId) throw new BadRequestError("Vui lòng nhập id phòng");
+    
+    // Check if room exists
+    const room = await prisma.room.findUnique({ where: { ID: +roomId }});
+    if(!room) throw new NotFoundError("Không tìm thấy phòng");
 
-    const device = await prisma.device.findFirst({
-      where: { room_id: roomId },
-    });
+    // Removed Dead Code: const device = await prisma.device.findFirst(...)
 
     const mappedDevice = await prisma.device.updateMany({
       where: { ID: { in: deviceIds } },
@@ -284,20 +286,23 @@ export const studySpaceService = {
   deleteRoomImage: async function (req) {
     const { roomId, imageId } = req.params;
 
-    const images = await prisma.room_image.findFirst({
+    // 1. Find the SPECIFIC image (findFirst returns one object)
+    const image = await prisma.room_image.findFirst({
       where: { id: +imageId, room_id: +roomId },
     });
 
-    if (!images) throw new NotFoundError("Không tìm thấy ảnh");
+    if (!image) throw new NotFoundError("Không tìm thấy ảnh");
 
-    await Promise.all(
-      images.map((img) => cloudinary.uploader.destroy(img.cloudinary_id)),
-    );
+    // 2. Delete from Cloudinary using the single ID
+    if (image.cloudinary_id) {
+        await cloudinary.uploader.destroy(image.cloudinary_id);
+    }
 
-    deletedImages = await prisma.room_image.deleteMany({
-      where: { room_id: roomId },
+    // 3. Delete ONLY that specific record from Database (Use .delete, not .deleteMany)
+    const deletedImage = await prisma.room_image.delete({
+      where: { id: +imageId }, 
     });
 
-    return { deletedImages };
+    return { deletedImage };
   },
 };

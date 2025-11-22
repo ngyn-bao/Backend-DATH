@@ -36,7 +36,7 @@ export const adminConfigService = {
       orderBy: { ID: "asc" },
     });
 
-    return { configs: configs.length === 0 ? configs : [] };
+    return { configs: configs.length === 0 ? [] : configs };
   },
 
   // findOne: async function (req) {
