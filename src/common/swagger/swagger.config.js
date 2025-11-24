@@ -34,6 +34,10 @@ const options = {
         description: "Đăng ký / Đăng nhập",
       },
       {
+        name: "User",
+        description: "Người dùng",
+      },
+      {
         name: "Study Space / Room Management",
         description: "Quản lý phòng học, hình ảnh, IoT và QR Code",
       },

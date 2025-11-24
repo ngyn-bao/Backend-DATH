@@ -8,10 +8,12 @@ import adminConfigRouter from "./adminConfig.router.js";
 import adminUserRouter from "./adminUser.router.js";
 import reportRouter from "./report.router.js";
 import feedbackRouter from "./feedback.router.js";
+import userRouter from "./user.router.js";
 
 const rootRouter = express.Router();
 
 rootRouter.use("/auth", authRouter);
+rootRouter.use("/user", userRouter);
 rootRouter.use("/study-space", studySpaceRouter);
 rootRouter.use("/booking", bookingRouter);
 rootRouter.use("/checkin", checkinRouter);

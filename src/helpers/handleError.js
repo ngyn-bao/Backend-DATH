@@ -18,8 +18,15 @@ export const errorHandler = (err, req, res, next) => {
     err.code = 403;
   }
 
-  const resErorr = handleErrorResponse(err.message, err.code, err.stack);
-  res.status(resErorr.code).json(resErorr);
+  const statusCode = err.code || 500;
+
+  const resError = handleErrorResponse(
+    err.message || "Internal Server Error",
+    statusCode,
+    err.stack,
+  );
+
+  return res.status(resError.code).json(resError);
 };
 
 export class BadRequestError extends Error {

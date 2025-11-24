@@ -6,6 +6,7 @@ import fileUpload from "express-fileupload";
 import { setupSwagger } from "./src/common/swagger/swagger.config.js";
 import { PORT } from "./src/common/constant/config.constant.js";
 import cookieParser from "cookie-parser";
+import { errorHandler } from "./src/helpers/handleError.js";
 
 const app = express();
 
@@ -27,6 +28,8 @@ app.use(fileUpload({ useTempFiles: true, tempFileDir: "/tmp/" }));
 setupSwagger(app);
 
 app.use(rootRouter);
+
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`Dự án đang chạy trên PORT ${port}!`);
