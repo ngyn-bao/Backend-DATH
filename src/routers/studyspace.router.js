@@ -20,7 +20,7 @@ studySpaceRouter.patch(
 );
 studySpaceRouter.delete("/:id", protect, studySpaceController.remove);
 studySpaceRouter.delete(
-  "/:roomId/images/:imageId",
+  "/:roomId/delete-img/:imageId",
   protect,
   studySpaceController.deleteRoomImage,
 );

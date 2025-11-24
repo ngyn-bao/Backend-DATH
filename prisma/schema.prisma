@@ -44,6 +44,7 @@ model device {
   room_id            Int?
   name               String?         @db.VarChar(255)
   description        String?         @db.Text
+  image_url          String?         @db.VarChar(255)
   energy_consumption Float?          @db.Float
   type               String?         @db.VarChar(100)
   room               room?           @relation(fields: [room_id], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "device_ibfk_1")
