@@ -19,11 +19,12 @@ export const userService = {
         created_date: true,
         manager_id: true,
         last_login: true,
+        role: { select: { role_name: true } },
       },
     });
 
     if (!foundUser) throw new NotFoundError("Không tìm thấy user");
-    return { foundUser };
+    return foundUser;
   },
 
   update: async function (req) {
@@ -52,12 +53,13 @@ export const userService = {
         created_date: true,
         manager_id: true,
         last_login: true,
+        role: { select: { role_name: true } },
       },
     });
 
     if (!user) throw new BadRequestError("Lỗi update user");
 
-    return { updatedUser: user };
+    return user;
   },
 
   changePassword: async function (req) {
@@ -89,11 +91,12 @@ export const userService = {
         created_date: true,
         manager_id: true,
         last_login: true,
+        role: { select: { role_name: true } },
       },
     });
 
     if (!updatedUser) throw new BadRequestError("Lỗi update mật khẩu");
 
-    return { updatedUser };
+    return updatedUser;
   },
 };

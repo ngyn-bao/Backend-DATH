@@ -1,4 +1,5 @@
 import { handleSuccessResponse } from "../helpers/handleResponse.js";
+import { userService } from "../services/user.service.js";
 
 export const userController = {
   /**
@@ -7,6 +8,8 @@ export const userController = {
    *   get:
    *     summary: Lấy thông tin 1 user
    *     tags: [User]
+   *     security:
+   *       - BearerAuth: []
    *     parameters:
    *       - in: path
    *         name: id
@@ -23,7 +26,7 @@ export const userController = {
   findOne: async function (req, res, next) {
     try {
       const result = await userService.findOne(req);
-      const response = responseSuccess(
+      const response = handleSuccessResponse(
         `Get entity #${req.params.id} successfully`,
         200,
         result,
@@ -40,6 +43,8 @@ export const userController = {
    *   patch:
    *     summary: Cập nhật thông tin user
    *     tags: [User]
+   *     security:
+   *       - BearerAuth: []
    *     parameters:
    *       - in: path
    *         name: id
@@ -74,7 +79,7 @@ export const userController = {
   update: async function (req, res, next) {
     try {
       const result = await userService.update(req);
-      const response = responseSuccess(
+      const response = handleSuccessResponse(
         `Update entity #${req.params.id} successfully`,
         200,
         result,
@@ -91,6 +96,8 @@ export const userController = {
    *   patch:
    *     summary: Đổi mật khẩu user
    *     tags: [User]
+   *     security:
+   *       - BearerAuth: []
    *     parameters:
    *       - in: path
    *         name: id
