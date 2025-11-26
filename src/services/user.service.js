@@ -19,7 +19,7 @@ export const userService = {
         created_date: true,
         manager_id: true,
         last_login: true,
-        role: { select: { role_name: true } },
+        role: { select: { role_name: true, ID: true } },
       },
     });
 
@@ -53,7 +53,7 @@ export const userService = {
         created_date: true,
         manager_id: true,
         last_login: true,
-        role: { select: { role_name: true } },
+        role: { select: { role_name: true, ID: true } },
       },
     });
 
@@ -91,7 +91,7 @@ export const userService = {
         created_date: true,
         manager_id: true,
         last_login: true,
-        role: { select: { role_name: true } },
+        role: { select: { role_name: true, ID: true } },
       },
     });
 
