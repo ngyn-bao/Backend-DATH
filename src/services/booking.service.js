@@ -34,7 +34,7 @@ export const bookingService = {
         end_time: new Date(end_time),
         status: "Booked",
       },
-      include: { room: true },
+      include: { room: { include: { room_image: true } }, feedback: true },
     });
 
     // await prisma.room.update({
@@ -60,6 +60,7 @@ export const bookingService = {
 
     const foundBooking = await prisma.booking.findUnique({
       where: { ID: +bookingId },
+      include: { room: { include: { room_image: true } }, feedback: true },
     });
 
     if (!foundBooking) throw new NotFoundError("Không tìm thấy booking");
