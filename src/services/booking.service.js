@@ -46,7 +46,9 @@ export const bookingService = {
   },
 
   findAll: async function (req) {
-    const bookingList = await prisma.booking.findMany();
+    const bookingList = await prisma.booking.findMany({
+      include: { room: { include: { room_image: true } }, feedback: true },
+    });
 
     return { bookingList: bookingList.length === 0 ? [] : bookingList };
   },
