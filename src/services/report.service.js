@@ -56,9 +56,20 @@ export const reportService = {
       const booking = bookings[index];
 
       if (booking.checkin_time != null) {
-        timeUsageByHours += (
-          booking.checkout_time - booking.checkin_time
-        ).getHours();
+        // timeUsageByHours += (
+        //   booking.checkout_time - booking.checkin_time
+        // ).getHours();
+        const checkin = new Date(booking.checkin_time);
+        const checkout = new Date(booking.checkout_time);
+        
+        // Hiệu số tính bằng miligiây
+        const diffMs = checkout - checkin; 
+        
+        // Đổi miligiây sang giờ (1 giờ = 3,600,000 ms)
+        const diffHours = diffMs / (1000 * 60 * 60);
+        
+        // Cộng dồn vào tổng thời gian sử dụng
+        timeUsageByHours += diffHours;
       } else {
         noCheckinCount++;
       }

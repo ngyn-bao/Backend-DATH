@@ -25,7 +25,7 @@ bookingRouter.get("/:id", protect, bookingController.findOne);
 bookingRouter.delete(
   "/:id",
   protect,
-  checkPermission(["Student", "Admin", "Lecturer"]),
+  checkPermission(["student", "Admin", "lecturer"]),
   bookingController.remove,
 );
 
